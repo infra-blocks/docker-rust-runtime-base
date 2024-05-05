@@ -1,3 +1,3 @@
-ARG BASE
+ARG ALPINE_VERSION
 
-FROM hello-world:${BASE}
+FROM alpine:${ALPINE_VERSION}

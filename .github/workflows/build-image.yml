@@ -8,8 +8,8 @@ on:
         required: true
         default: '["latest"]'
       # List the required build arguments here.
-      base:
-        description: An example build argument which specifies the base image tag to use.
+      builder-tag:
+        description: The builder image tag to build a runtime image for.
         required: true
 
 jobs:
@@ -29,13 +29,27 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry-type: public
+      - name: Infer builder image alpine version
+        id: infer-alpine-version
+        env:
+          BUILDER_TAG: ${{ inputs.builder-tag }}
+        run: |
+          if test "${{ runner.debug }}" = "1"; then
+            set -x
+          fi
+          
+          echo "inferring alpine version for builder image with tag ${{ inputs.builder-tag }}"
+          alpine_version=$(BUILDER_TAG=${BUILDER_TAG} ./scripts/builder-alpine-version.sh)
+          echo "inferred: \"${alpine_version}\""
+          
+          echo "alpine-version=${alpine_version}" >> ${GITHUB_OUTPUT}
       - name: Build, tag and publish docker image
         id: docker-publish
         uses: infrastructure-blocks/docker-publish-action@v1
         with:
           service: base
           tags: ${{ fromJson(inputs.tags) }}
-          build-arguments: '{"BASE": "${{ inputs.base }}"}'
+          build-arguments: '{"ALPINE_VERSION": "${{ steps.infer-alpine-version.outputs.alpine-version }}"}'
       - name: Show published images
         run: |
           echo "${{ steps.docker-publish.outputs.published }}"
