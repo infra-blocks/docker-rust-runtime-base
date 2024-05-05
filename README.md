@@ -2,7 +2,7 @@
 [![Build Image](https://github.com/infrastructure-blocks/docker-rust-runtime-base/actions/workflows/build-image.yml/badge.svg)](https://github.com/infrastructure-blocks/docker-rust-runtime-base/actions/workflows/build-image.yml)
 [![Update From Template](https://github.com/infrastructure-blocks/docker-rust-runtime-base/actions/workflows/update-from-template.yml/badge.svg)](https://github.com/infrastructure-blocks/docker-rust-runtime-base/actions/workflows/update-from-template.yml)
 
-This is a runtime image for GitHub Actions that run Rust code. The image is the compliment of the matching 
+This is a runtime image for GitHub Actions that run Rust code. The image is the complement of the matching 
 [builder image](https://github.com/infrastructure-blocks/docker-rust-builder-base/).
 
 The image is based on `alpine`, so the matching builder image should also be based on `alpine`.
